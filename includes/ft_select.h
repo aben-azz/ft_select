@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/03 09:25:27 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/11 15:37:53 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/13 21:38:36 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,20 @@ typedef struct	s_cap
 	char		*clr_curr_line;
 	char		*clr_all_line;
 	char		*sound;
-	int			cursx;
-	int			cursx_max;
-	int			cursy_max;
-	int			cursy;
+	char		*reset;
+	char		*underline;
+	char		*reverse_mode;
+	int			xmax;
+	int			ymax;
+	int			selected;
+	int			focus;
+	int			*ignored;
+	int			size;
+	char		**data;
+	int			max_len;
+	int			column;
+	int			row;
+	int			carry;
 }				t_cap;
 
 void			display_prompt_prefix();
@@ -53,5 +63,9 @@ void			display_prompt_prefix();
 */
 
 void	init_signal(void);
-
+int		print_argv(t_cap *tcap);
+int		arrow_up_event(t_cap *tcap);
+int		arrow_down_event(t_cap *tcap);
+int		arrow_right_event(t_cap *tcap);
+int		arrow_left_event(t_cap *tcap);
 #endif

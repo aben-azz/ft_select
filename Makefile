@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/10/11 15:12:40 by aben-azz          #+#    #+#              #
-#    Updated: 2019/10/11 15:16:56 by aben-azz         ###   ########.fr        #
+#    Created: 2019/02/03 09:24:41 by aben-azz          #+#    #+#              #
+#    Updated: 2019/10/13 21:32:28 by aben-azz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,13 +32,15 @@ _ICYAN			=	\x1b[46m
 _IWHITE			=	\x1b[47m
 _MAGENTA		=	\x1b[35m
 
-MSG				=	Compiling ft_select
+NAME = ft_select
+
+MSG				=	$(_BOLD)$(_BLUE)Compiling ft_select:$(_END)
 .PHONY: all, $(NAME), clean, fclean, re
 
-NAME = ft_select
+
 cc = gcc
-C_FLAGS = -Wall -Wextra -Werror #-fsanitize=address
-SRC_NAME = main.c signal_handler.c
+FLAGS = -Wall -Wextra -Werror -fsanitize=address
+SRC_NAME = main.c signal_handler.c arrow_events.c
 OBJ_PATH = ./obj/
 LFT_PATH = ./libft/
 LFT_NAME = libft.a
@@ -57,26 +59,23 @@ all: $(LFT_PATH)$(LFT_NAME) $(NAME)
 $(LFT_PATH)$(LFT_NAME):
 	@$(MAKE) -C $(LFT_PATH);
 
-$(NAME): $(OBJ)
-		@$(CC) $(FLAGS) -o $(NAME) -L $(LFT_PATH) -lft -ltermcap $^ -o $@ #-fsanitize=address
-		@printf "$(_BOLD)$(_RED)./$(NAME) is ready for use\n$(_END)"
+$(NAME): $(LIBFT_PATH)$(LIBFT_NAME) $(OBJ)
+	@$(CC) $(FLAGS) -o $(NAME) -L $(LFT_PATH) -lft -l termcap $^ -o $@
+	@printf "\r\033[K$(_BOLD)$(_RED)./$(NAME) is ready for use\n$(_END)"
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(INC_FPATH)
-		@mkdir -p $(OBJ_PATH)
-		@$(CC) $(FLAGS) $(INC) -o $@ -c $<
-		@printf "$(_BOLD)$(_BLUE)$(MSG)$(_END) $(_BOLD)$(_CYAN)%-$(LONGEST)s\
-		$(_END)" $(notdir $<)
-		@if test -s obj/$*.o; then \
-		printf "$(_GREEN) [SUCCES]\n$(_END)"; fi
+	@mkdir -p $(OBJ_PATH)
+	@$(CC) $(FLAGS) $(INC) -o $@ -c $<
+	@printf "\r\033[K$(MSG) $(_BOLD)$(_CYAN)%-$(LONGEST)s\$(_END)" $(notdir $<)
 
 clean:
-		@make -C $(LFT_PATH) clean
-		@rm -rf $(OBJ_PATH)
-		@echo "$(_BOLD)$(_RED)Sucesfuly removed all objects from minishell$(_END)"
+	@make -C $(LFT_PATH) clean
+	@rm -rf $(OBJ_PATH)
+	@echo "$(_BOLD)$(_RED)Sucesfuly removed all objects from minishell$(_END)"
 
 fclean: clean
-		@make -C $(LFT_PATH) fclean
-		@rm -f $(NAME)
-		@echo "$(_BOLD)$(_RED)Sucessfuly removed ${NAME} from minishell$(_END)"
+	@make -C $(LFT_PATH) fclean
+	@rm -f $(NAME)
+	@echo "$(_BOLD)$(_RED)Sucessfuly removed ${NAME} from minishell$(_END)"
 
 re: fclean all
