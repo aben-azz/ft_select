@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 08:51:22 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/13 21:38:42 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/13 21:57:04 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static	inline	int	init_tcap_variables(t_cap *tcap, char **argv)
 	tcap->max_len = 0;
 	tcap->focus = 0;
 	tcap->selected = 0;
-
 	i = -1;
 	while (tcap->data[++i])
 		tcap->max_len = ft_max(ft_strlen(tcap->data[i]), tcap->max_len);
@@ -72,43 +71,42 @@ void	sig_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		printf("on quitte\n");
+		ft_putstr(tparm(tgetstr("cm", NULL), 0, 0));
+		ft_putstr(tgetstr("cd", NULL));
+		//tcsetattr(0, TCSADRAIN, g_shell->term)
 		exit(0);
 	}
 }
 
-void display_prompt()
-{
-	ft_printf("\x1b[32m$ft_select>\x1b[0m ");
-}
+/*
+** void	sig_winch(int signal)
+** {
+** 	struct winsize	*w;
+**
+** 	if (signal == SIGWINCH)
+** 	{
+** 		ft_putstr(tparm(tgetstr("cm", NULL), 0, 0));
+** 		ft_putstr(tgetstr("cd", NULL));
+** 		i = ioctl(1, TIOCGWINSZ, w);
+** 		tcap->xmax = (!i ? tgetnum("co") : w->ws_col) - 1;
+** 		tcap->ymax = (!i ? tgetnum("li") : w->ws_row) - 1;
+** 		tcap->size = argc - 1;
+** 		free(w);
+** 		exit(0);
+** 	}
+** }
+*/
 
-void read_arrows(char touche[2], int shift, t_cap *tcap)
+void read_arrows(char touche[2], t_cap *tcap)
 {
-	if (shift)
-	{
-		if (touche[1] == ARROW_UP)
-			ft_printf("{LU}\n");
-		else if (touche[1] == ARROW_DOWN)
-			ft_printf("{LD}\n");
-		else if (touche[1] == ARROW_LEFT)
-			ft_printf("{LL}\n");
-		else if (touche[1] == ARROW_RIGHT)
-			ft_printf("{LR}\n");
-	}
-	else
-	{
-		if (touche[1] == ARROW_UP)
-			arrow_up_event(tcap);
-		else if (touche[1] == ARROW_DOWN)
-			arrow_down_event(tcap);
-		else if (touche[1] == ARROW_LEFT)
-			arrow_left_event(tcap);
-		else if (touche[1] == ARROW_RIGHT)
-			arrow_right_event(tcap);
-		if (touche[1] == ARROW_UP || touche[1] == ARROW_DOWN ||
-				touche[1] == ARROW_LEFT || touche[1] == ARROW_RIGHT)
-			;//display_prompt();
-	}
+	if (touche[1] == ARROW_UP)
+		arrow_up_event(tcap);
+	else if (touche[1] == ARROW_DOWN)
+		arrow_down_event(tcap);
+	else if (touche[1] == ARROW_LEFT)
+		arrow_left_event(tcap);
+	else if (touche[1] == ARROW_RIGHT)
+		arrow_right_event(tcap);
 }
 
 int		ft_move(t_cap *tcap, char *string, int n)
@@ -127,19 +125,26 @@ int		ft_move(t_cap *tcap, char *string, int n)
 	return (1);
 }
 
+void	print_file_name(char **string, t_cap *tcap, int i)
+{
+	if (tcap->selected == i)
+		ft_putstr(tcap->reverse_mode);
+	if (tcap->focus == i)
+		ft_putstr(tcap->underline);
+	ft_putstr(string[i]);
+	ft_putstr(tcap->reset);
+	ft_move(tcap, "right", tcap->max_len - ft_strlen(string[i]) + 2);
+}
+
 int	print_argv(t_cap *tcap)
 {
-	int x;
-	int y;
 	int c;
 	int r;
 	int i;
 
 	i = 0;
-	x = 0;
-	y = 0;
 	c = -1;
-	ft_putstr(tparm(tgetstr("cm", NULL), y, x));
+	ft_putstr(tparm(tgetstr("cm", NULL), 0, 0));
 	ft_putstr(tcap->clr_all_line);
 	tcap->row = tcap->xmax / ft_max(tcap->max_len + 2, 1);
 	tcap->row = ft_min(tcap->size, tcap->row);
@@ -150,31 +155,13 @@ int	print_argv(t_cap *tcap)
 	{
 		r = -1;
 		while (++r < tcap->row)
-		{
-			if (tcap->selected == i)
-				ft_putstr(tcap->reverse_mode);
-			if (tcap->focus == i)
-				ft_putstr(tcap->underline);
-			ft_putstr(tcap->data[i]);
-			ft_putstr(tcap->reset);
-			ft_move(tcap, "right", tcap->max_len - ft_strlen(tcap->data[i]) + 2);
-			i++;
-		}
-		if (tcap->column > 1)
-			ft_move(tcap, "down", 1);
+			print_file_name(tcap->data, tcap, i++);
+		ft_move(tcap, "down", 1);
 	}
 	if (tcap->carry)
 		while (tcap->data[i])
-		{
-			if (tcap->selected == i)
-				ft_putstr(tcap->reverse_mode);
-			if (tcap->focus == i)
-				ft_putstr(tcap->underline);
-			ft_putstr(tcap->data[i]);
-			ft_putstr(tcap->reset);
-			ft_move(tcap, "right", tcap->max_len - ft_strlen(tcap->data[i]) + 2);
-			i++;
-		}
+			print_file_name(tcap->data, tcap, i++);
+	ft_putstr(tparm(tgetstr("cm", NULL), -1, -1));
 	return (1);
 }
 
@@ -193,11 +180,11 @@ int		main(int ac, char **av)
 	{
 		ft_bzero(buffer, 2);
 		read(0, &buffer, 1);
-		if (buffer[0] == 27 || buffer[0] == 59)
+		if (buffer[0] == 27)
 		{
 			ft_bzero(touche, 2);
 			read(0, touche, 2);
-			read_arrows(touche, buffer[0] == 59, &tcap);
+			read_arrows(touche, &tcap);
 		}
 		else if (buffer[0] == 4)
 		{
