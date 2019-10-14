@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 04:55:03 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/14 05:05:37 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/14 05:33:24 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ int		init_tcap(t_term *term, t_cap *tcap, int argc, t_term *term_backup)
 	free(w);
 	return (1);
 }
-
 
 int		main(int ac, char **av)
 {
