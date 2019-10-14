@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/03 09:25:27 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/14 02:18:34 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/14 04:38:11 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@
 # define ARROW_RIGHT	67
 # define ARROW_LEFT		68
 # define ENTER			10
+# define SPACE			32
+# define TAB			9
+# define DEL			127
+# define ESC			27
+
 typedef struct stat	t_stat;
 typedef struct termios		t_term;
 
@@ -47,9 +52,8 @@ typedef struct	s_cap
 	char		*reverse_mode;
 	int			xmax;
 	int			ymax;
-	int			selected;
+	int			*selected;
 	int			focus;
-	int			*ignored;
 	int			size;
 	char		**data;
 	int			max_len;
