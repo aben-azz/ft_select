@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/03 09:25:27 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/13 21:38:36 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/14 02:18:34 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define ENTER			10
 typedef struct stat	t_stat;
 typedef struct termios		t_term;
+
 typedef struct	s_cap
 {
 	char		*up;
@@ -56,8 +57,13 @@ typedef struct	s_cap
 	int			row;
 	int			carry;
 }				t_cap;
-
-void			display_prompt_prefix();
+typedef struct	s_global
+{
+	t_term	*term;
+	t_term	*term_backup;
+	t_cap	*tcap;
+}				t_global;
+extern	t_global *g_global;
 /*
 **	SIGNAL_HANDLER.C
 */

@@ -6,12 +6,14 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 08:51:22 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/13 21:57:04 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/14 02:21:08 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_select.h"
 #include <unistd.h>
+
+t_global	*g_global;
 
 static	inline	int	init_tcap_variables(t_cap *tcap, char **argv)
 {
@@ -46,13 +48,18 @@ static	inline	int	init_tcap_variables(t_cap *tcap, char **argv)
 	return (1);
 }
 
-int		init_tcap(t_term *term, t_cap *tcap, int argc, char **argv)
+int		init_tcap(t_term *term, t_cap *tcap, int argc, t_term *term_backup)
 {
 	struct winsize	*w;
 	int				i;
 
-	if (!~tcgetattr(0, term))
+	if (!~tcgetattr(0, term) || !~tcgetattr(0, term_backup))
 		return (0);
+	if (!(g_global = ft_memalloc(sizeof(*g_global))))
+		return (0);
+	g_global->term = term;
+	g_global->term_backup = term_backup;
+	g_global->tcap = tcap;
 	term->c_lflag &= ~(ICANON);
 	term->c_lflag &= ~(ECHO);
 	term->c_cc[VMIN] = 1;
@@ -64,19 +71,9 @@ int		init_tcap(t_term *term, t_cap *tcap, int argc, char **argv)
 	tcap->ymax = (!i ? tgetnum("li") : w->ws_row) - 1;
 	tcap->size = argc - 1;
 	free(w);
-	return (init_tcap_variables(tcap, argv));
+	return (1);
 }
 
-void	sig_handler(int signal)
-{
-	if (signal == SIGINT)
-	{
-		ft_putstr(tparm(tgetstr("cm", NULL), 0, 0));
-		ft_putstr(tgetstr("cd", NULL));
-		//tcsetattr(0, TCSADRAIN, g_shell->term)
-		exit(0);
-	}
-}
 
 /*
 ** void	sig_winch(int signal)
@@ -168,13 +165,18 @@ int	print_argv(t_cap *tcap)
 int		main(int ac, char **av)
 {
 	t_term	term;
+	t_term	term_backup;
 	char	buffer[2];
 	char	touche[2];
 	t_cap	tcap;
 
-	if (!(tgetent(NULL, getenv("TERM"))) || !init_tcap(&term, &tcap, ac, av))
-		return (-1);
-	signal(SIGINT, sig_handler);
+	if (!(tgetent(NULL, getenv("TERM"))) || !init_tcap(&term, &tcap, ac,
+		&term_backup) || !init_tcap_variables(&tcap, av))
+	{
+		tcsetattr(0, TCSADRAIN, &term_backup);
+		return (1);
+	}
+	init_signal();
 	print_argv(&tcap);
 	while (19)
 	{

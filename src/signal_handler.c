@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 14:36:11 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/11 15:07:14 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/14 02:23:54 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,45 +15,35 @@
 /*
 ** Handler for CTRL+C signal in idle status.
 */
-static void	sigint_handler(int sig)
+static void	sigint_handler(int signal)
 {
-	if (sig == SIGINT)
+	if (signal == SIGINT)
 	{
+		ft_putstr(tparm(tgetstr("cm", NULL), 0, 0));
+		ft_putstr(tgetstr("cd", NULL));
+		tcsetattr(0, TCSADRAIN, g_global->term_backup);
 		exit(0);
 	}
 }
 
-/*
-** Handler for window resizing signal. (tcaps)
-*/
-/*
-** static void	sigwinch_handler(int sig)
-** {
-** 	t_cap	*tcap;
-** 	int		p;
-** 	int		prompt_len;
-**
-** 	tcap = g_shell->tcap;
-** 	p = tcap->cursy * (tcap->cursx_max + 1) + (tcap->cursx) - tcap->prompt_len;
-** 	prompt_len = tcap->init_len;
-** 	if (sig == SIGWINCH)
-** 	{
-** 		init_termcap(tcap);
-** 		if (prompt_len >= g_shell->tcap->cursx_max + 1)
-** 			tcap->prompt_len = prompt_len % (tcap->cursx_max + 1);
-** 		else
-** 			tcap->prompt_len = prompt_len;
-** 		tcap->cursy = (p + tcap->prompt_len) / (tcap->cursx_max + 1);
-** 		tcap->cursx = (p + tcap->prompt_len) % (tcap->cursx_max + 1);
-** 		if (g_shell->autocomp->state)
-** 		{
-** 			tputs(tcap->clr_all_line, 1, ft_put_termcaps);
-** 			ft_tab(tcap, g_shell->autocomp);
-** 		}
-** 	}
-** }
-*/
+static void	sigwinch_handler(int signal)
+{
+	struct winsize	*w;
+	int i;
 
+	if (signal == SIGWINCH)
+	{
+		if (!(w = ft_memalloc(sizeof(*w))))
+			return ;
+		ft_putstr(tparm(tgetstr("cm", NULL), 0, 0));
+		ft_putstr(tgetstr("cd", NULL));
+		i = !ioctl(1, TIOCGWINSZ, w);
+		g_global->tcap->xmax = (!i ? tgetnum("co") : w->ws_col) - 1;
+		g_global->tcap->ymax = (!i ? tgetnum("li") : w->ws_row) - 1;
+		free(w);
+		print_argv(g_global->tcap);
+	}
+}
 /*
 ** Handler for CTRL+Z in idle status.
 */
@@ -73,5 +63,5 @@ void	init_signal(void)
 	signal(SIGALRM, SIG_IGN);
 	signal(SIGTSTP, sigtstp_handler);
 	signal(SIGINT, sigint_handler);
-	//signal(SIGWINCH, sigwinch_handler);
+	signal(SIGWINCH, sigwinch_handler);
 }
