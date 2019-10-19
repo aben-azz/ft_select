@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 15:53:33 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/19 16:07:40 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/19 16:44:41 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,11 @@ static inline void		remove_data(t_cap *tcap, int exception)
 int						read_keys(char touche, t_cap *tcap)
 {
 	if (touche == 4 || touche == ESC)
+	{
+		ft_termcap(tparm(tgetstr("cm", NULL), 0, 0));
+		ft_termcap(tcap->clr_all_line);
 		return (-1);
+	}
 	else if (touche == ENTER)
 		return (return_selected(tcap));
 	else if (touche == SPACE)
