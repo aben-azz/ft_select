@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/03 09:25:27 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/14 04:38:11 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/19 16:10:48 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,48 +34,48 @@
 # define DEL			127
 # define ESC			27
 
-typedef struct stat	t_stat;
-typedef struct termios		t_term;
+typedef struct stat		t_stat;
+typedef struct termios	t_term;
 
-typedef struct	s_cap
+typedef struct			s_cap
 {
-	char		*up;
-	char		*down;
-	char		*right;
-	char		*left;
-	char		*carriage;
-	char		*clr_curr_line;
-	char		*clr_all_line;
-	char		*sound;
-	char		*reset;
-	char		*underline;
-	char		*reverse_mode;
-	int			xmax;
-	int			ymax;
-	int			*selected;
-	int			focus;
-	int			size;
-	char		**data;
-	int			max_len;
-	int			column;
-	int			row;
-	int			carry;
-}				t_cap;
-typedef struct	s_global
+	char				*up;
+	char				*down;
+	char				*right;
+	char				*left;
+	char				*carriage;
+	char				*clr_curr_line;
+	char				*clr_all_line;
+	char				*sound;
+	char				*reset;
+	char				*underline;
+	char				*reverse_mode;
+	char				*unset_cursor;
+	char				*set_cursor;
+	int					xmax;
+	int					ymax;
+	int					*selected;
+	int					focus;
+	int					size;
+	char				**data;
+	int					max_len;
+	int					column;
+	int					row;
+	int					carry;
+}						t_cap;
+typedef struct			s_global
 {
-	t_term	*term;
-	t_term	*term_backup;
-	t_cap	*tcap;
-}				t_global;
-extern	t_global *g_global;
-/*
-**	SIGNAL_HANDLER.C
-*/
-
-void	init_signal(void);
-int		print_argv(t_cap *tcap);
-int		arrow_up_event(t_cap *tcap);
-int		arrow_down_event(t_cap *tcap);
-int		arrow_right_event(t_cap *tcap);
-int		arrow_left_event(t_cap *tcap);
+	t_term				*term;
+	t_term				*term_backup;
+	t_cap				*tcap;
+}						t_global;
+extern	t_global		*g_global;
+void					ft_termcap(char *str);
+int						print_argv(t_cap *tcap);
+int						return_selected(t_cap *tcap);
+void					init_signal(void);
+int						read_keys(char touche, t_cap *tcap);
+void					read_arrows(char touche[2], t_cap *tcap);
+int						init_tcap_variables(t_cap *tcap, char **argv);
+int						init_tcap(t_term *t, t_cap *tcap, int argc, t_term *t);
 #endif

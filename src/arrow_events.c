@@ -6,13 +6,13 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/13 21:32:07 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/13 21:35:49 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/19 16:06:59 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_select.h"
 
-int		arrow_up_event(t_cap *tcap)
+static int		arrow_up_event(t_cap *tcap)
 {
 	int		x;
 
@@ -36,7 +36,7 @@ int		arrow_up_event(t_cap *tcap)
 	return (print_argv(tcap));
 }
 
-int		arrow_down_event(t_cap *tcap)
+static int		arrow_down_event(t_cap *tcap)
 {
 	int		new_x;
 
@@ -53,7 +53,7 @@ int		arrow_down_event(t_cap *tcap)
 	return (print_argv(tcap));
 }
 
-int		arrow_right_event(t_cap *tcap)
+static int		arrow_right_event(t_cap *tcap)
 {
 	tcap->focus++;
 	if (tcap->focus == tcap->size)
@@ -61,10 +61,22 @@ int		arrow_right_event(t_cap *tcap)
 	return (print_argv(tcap));
 }
 
-int		arrow_left_event(t_cap *tcap)
+static int		arrow_left_event(t_cap *tcap)
 {
 	tcap->focus--;
 	if (tcap->focus == -1)
 		tcap->focus = tcap->size - 1;
 	return (print_argv(tcap));
+}
+
+void			read_arrows(char touche[2], t_cap *tcap)
+{
+	if (touche[1] == ARROW_UP)
+		arrow_up_event(tcap);
+	else if (touche[1] == ARROW_DOWN)
+		arrow_down_event(tcap);
+	else if (touche[1] == ARROW_LEFT)
+		arrow_left_event(tcap);
+	else if (touche[1] == ARROW_RIGHT)
+		arrow_right_event(tcap);
 }
