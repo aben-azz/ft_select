@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/03 09:25:27 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/19 16:42:02 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/20 06:46:13 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define ARROW_LEFT		68
 # define ENTER			10
 # define SPACE			32
+# define BACKSPACE		126
 # define TAB			9
 # define DEL			127
 # define ESC			27

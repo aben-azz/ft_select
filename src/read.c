@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 15:53:33 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/19 16:44:41 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/20 07:29:27 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,12 @@ int						read_keys(char touche, t_cap *tcap)
 	else if (touche == ENTER)
 		return (return_selected(tcap));
 	else if (touche == SPACE)
+	{
 		tcap->selected[tcap->focus] = !tcap->selected[tcap->focus];
-	else if (touche == DEL)
+		if (tcap->selected[tcap->focus])
+			tcap->focus = ft_min(tcap->focus + 1, tcap->size - 1);
+	}
+	else if (touche == DEL || touche == BACKSPACE)
 		remove_data(tcap, tcap->focus);
 	print_argv(tcap);
 	return (1);
