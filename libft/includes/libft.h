@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: midrissi <midrissi@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/04 13:56:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/06/15 15:54:58 by ghamelek         ###   ########.fr       */
+/*   Updated: 2019/10/21 16:43:52 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,4 +161,5 @@ void			ft_exit(char *msg);
 int				ft_nlastindexof(char *string, char c, int n);
 int				ft_isspace(int c);
 char			*ft_strreplace(char *orig, char *rep, char *with);
+void			ft_nputchar_fd(char c, int n, int fd);
 #endif

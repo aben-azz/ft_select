@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 15:50:33 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/19 16:07:12 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/21 17:02:31 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,19 @@ static inline void	init_tcap_str(t_cap *tcap)
 	tcap->reverse_mode = tgetstr("mr", NULL);
 	tcap->unset_cursor = tgetstr("vi", NULL);
 	tcap->set_cursor = tgetstr("ve", NULL);
+}
+
+int					ft_reset(void)
+{
+	if (g_global->tcap->selected)
+		free(g_global->tcap->selected);
+	if (g_global->tcap->data)
+		ft_splitdel(g_global->tcap->data);
+	if (g_global)
+		free(g_global);
+	tcsetattr(0, TCSANOW, g_global->term_backup);
+	ft_termcap(g_global->tcap->set_cursor);
+	return (0);
 }
 
 int					init_tcap_variables(t_cap *tcap, char **argv)
@@ -68,7 +81,7 @@ int					init_tcap(t_term *term, t_cap *tcap, int argc,
 	term->c_cc[VMIN] = 1;
 	term->c_cc[VTIME] = 0;
 	if (!~tcsetattr(0, TCSANOW, term) || !(w = ft_memalloc(sizeof(*w))))
-		return (0);
+		return (ft_reset());
 	i = ioctl(1, TIOCGWINSZ, w);
 	tcap->xmax = (i ? tgetnum("co") : w->ws_col) - 1;
 	tcap->ymax = (i ? tgetnum("li") : w->ws_row) - 1;

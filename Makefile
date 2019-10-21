@@ -6,7 +6,7 @@
 #    By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/03 09:24:41 by aben-azz          #+#    #+#              #
-#    Updated: 2019/10/20 07:04:09 by aben-azz         ###   ########.fr        #
+#    Updated: 2019/10/21 17:03:05 by aben-azz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ MSG				=	$(_BOLD)$(_BLUE)Compiling ft_select:$(_END)
 
 
 cc = gcc
-FLAGS = -Wall -Wextra -Werror -g -v #-fsanitize=address
+FLAGS = -Wall -Wextra -Werror #-g -v #-fsanitize=address
 SRC_NAME = main.c signal_handler.c arrow_events.c init.c read.c
 OBJ_PATH = ./obj/
 LFT_PATH = ./libft/

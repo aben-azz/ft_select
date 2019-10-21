@@ -6,7 +6,7 @@
 #    By: midrissi <midrissi@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/09 12:43:35 by midrissi          #+#    #+#              #
-#    Updated: 2019/10/20 07:04:42 by aben-azz         ###   ########.fr        #
+#    Updated: 2019/10/21 17:03:11 by aben-azz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ ft_abs.c ft_get_color.c ft_percent.c ft_interpolate.c ft_split_count.c \
 ft_strcjoin.c ft_strsplitstr.c ft_count_words_str.c ft_lastindexof.c \
 ft_indexof.c ft_levenshtein.c ft_substr.c ft_isonly_digit.c ft_strlen2.c \
 ft_splitdup.c ft_min.c ft_max.c ft_nlastindexof.c ft_exit.c ft_isspace.c \
-ft_strreplace.c
+ft_strreplace.c ft_nputchar_fd.c
 
 _END			=	\x1b[0m
 _BOLD			=	\x1b[1m
@@ -64,7 +64,7 @@ SRCS			:= $(SRC:%=$(SRCPATH)%)
 OBJ				:= $(SRC:%.c=$(OBJPATH)%.o)
 
 COMP		= gcc
-CFLAGS		= -Wall -Wextra -Werror -I./includes -c -g -v #-fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror -I./includes -c #-g -v #-fsanitize=address
 AR			= ar rcs
 
 LONGEST		?=	$(shell echo $(notdir $(SRCS)) | tr " " "\n" | awk ' { if (\

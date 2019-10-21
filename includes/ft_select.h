@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/03 09:25:27 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/20 06:46:13 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/21 16:55:54 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,9 @@ typedef struct			s_global
 	t_cap				*tcap;
 }						t_global;
 extern	t_global		*g_global;
+
 int						debug(void);
+int						ft_reset(void);
 void					ft_termcap(char *str);
 int						print_argv(t_cap *tcap);
 int						return_selected(t_cap *tcap);
