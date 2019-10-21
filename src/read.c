@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 15:53:33 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/20 07:29:27 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/21 17:32:07 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int						read_keys(char touche, t_cap *tcap)
 
 int						ft_move(t_cap *tcap, char *string, int n)
 {
+	if (!string)
+		return (0);
 	while (n--)
 	{
 		if (!ft_strcmp(string, "down"))

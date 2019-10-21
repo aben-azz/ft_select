@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 14:36:11 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/21 16:55:12 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/21 18:59:01 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ static void		bg(int sig)
 	(void)sig;
 	if (!isatty(1))
 		return ;
-	ft_reset();
+	tcsetattr(0, TCSANOW, g_global->term_backup);
+	ft_termcap(g_global->tcap->set_cursor);
 	signal(SIGTSTP, SIG_DFL);
 	ioctl(2, TIOCSTI, "\x1A");
 }
@@ -63,6 +64,7 @@ static void		fg(int sig)
 	int				i;
 
 	(void)sig;
+	ft_printf("fg\n");
 	if (!(w = ft_memalloc(sizeof(*w))))
 		return ;
 	tcsetattr(0, TCSANOW, g_global->term);
@@ -71,6 +73,7 @@ static void		fg(int sig)
 	g_global->tcap->xmax = (i ? tgetnum("co") : w->ws_col) - 1;
 	g_global->tcap->ymax = (i ? tgetnum("li") : w->ws_row) - 1;
 	free(w);
+	ft_printf("f 2g\n");
 	print_argv(g_global->tcap);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 08:51:22 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/21 16:58:08 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/21 19:17:27 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,6 @@
 #include <unistd.h>
 
 t_global	*g_global;
-
-/*
-** int			debug(void)
-** {
-** 	int fd;
-**
-** 	return (fd = open("log.log", O_RDWR | O_APPEND | O_CREAT, 0666));
-** }
-*/
 
 int		return_selected(t_cap *tcap)
 {
@@ -50,6 +41,8 @@ int		return_selected(t_cap *tcap)
 
 void	print_file_name(char **string, t_cap *tcap, int i)
 {
+	if (!string[i])
+		return ;
 	ft_putstr_fd("\x1b[31m[\x1b[0m", 2);
 	if (tcap->selected[i])
 		ft_termcap(tcap->reverse_mode);
@@ -110,17 +103,22 @@ int		read_buffer(t_cap *tcap)
 	return (1);
 }
 
-int		main(int ac, char **av)
+int		main(int ac, char **av, char **env)
 {
 	t_term	term;
 	t_term	term_backup;
 	t_cap	tcap;
 
 	if (!(tgetent(NULL, getenv("TERM"))) || !init_tcap(&term, &tcap, ac,
-		&term_backup) || !init_tcap_variables(&tcap, av))
+		&term_backup) || !init_tcap_variables(&tcap, av) || !env[0])
 	{
-		ft_putstr_fd("Erreur, TERM est indéfini", 2);
+		ft_putstr_fd("Erreur, env indéfini", 2);
 		return (ft_reset());
+	}
+	else if (ac == 1)
+	{
+		ft_putstr_fd("Usage: ./ft_select [arg] [arg] [arg]\n", 2);
+		return (1);
 	}
 	init_signal();
 	print_argv(&tcap);

@@ -6,7 +6,7 @@
 /*   By: aben-azz <aben-azz@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 15:50:33 by aben-azz          #+#    #+#             */
-/*   Updated: 2019/10/21 17:02:31 by aben-azz         ###   ########.fr       */
+/*   Updated: 2019/10/21 18:57:47 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ int					init_tcap_variables(t_cap *tcap, char **argv)
 	tcap->selected[0] = 0;
 	i = -1;
 	while (tcap->data[++i])
-		tcap->max_len = ft_max(ft_strlen(tcap->data[i]), tcap->max_len);
+		if (tcap->data[i])
+			tcap->max_len = ft_max(ft_strlen(tcap->data[i]), tcap->max_len);
 	return (1);
 }
 
