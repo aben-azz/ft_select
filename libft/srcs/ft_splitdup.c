@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_splitdup.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: midrissi <midrissi@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 10:33:14 by midrissi          #+#    #+#             */
-/*   Updated: 2019/06/15 16:30:49 by ghamelek         ###   ########.fr       */
+/*   Updated: 2019/10/21 17:05:19 by aben-azz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ static void		free_mem(char **strings, int len)
 	free(strings);
 }
 
-char	**ft_splitdup(char **src)
+char			**ft_splitdup(char **src)
 {
-	char **new;
-	int i;
-	int size;
+	char	**new;
+	int		i;
+	int		size;
 
 	if (!src)
 		return (NULL);
